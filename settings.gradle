@@ -1,0 +1,4 @@
+rootProject.name = 'openapi-javagen'
+
+include 'openapi-javagen-model', 'openapi-javagen-platform'
+

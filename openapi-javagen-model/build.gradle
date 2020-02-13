@@ -1,0 +1,81 @@
+plugins {
+    id 'java-library'
+}
+
+configurations {
+    swagger
+}
+
+dependencies {
+    implementation platform(project(':openapi-javagen-platform'))
+
+    compileOnly  'com.google.auto.value:auto-value-annotations:1.7'
+    compileOnly  'org.jetbrains:annotations:16.0.2'
+    annotationProcessor  'com.google.auto.value:auto-value:1.7'
+
+    api (group: 'com.google.guava', name: 'guava') {
+        transitive = false
+    }
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
+
+    swagger 'io.swagger:swagger-codegen-cli:2.4.10'
+
+    testImplementation group: 'commons-io', name: 'commons-io'
+    testImplementation 'junit:junit'
+    testImplementation 'org.assertj:assertj-core'
+}
+
+task copySwagger(type: Copy) {
+    into 'build/swagger'
+    from {
+        configurations.swagger
+    }
+}
+
+task generateSdk(type: JavaExec) {
+    classpath = files {
+        configurations.swagger.singleFile
+    }
+
+    jvmArgs = [
+            '-Dmodels', '-Dapis'
+    ]
+
+    args = [
+            'generate',
+            '-i', 'D:\\workspace\\openapi-javagen\\openapi-javagen-model\\src\\test\\resources\\batch-service-api.json',
+            '--lang', 'java',
+            '--config', 'swagger-config.json',
+            '--output', 'build/swagger',
+    ]
+}
+
+task swaggerHelp(type: JavaExec) {
+    classpath = files {
+        configurations.swagger.singleFile
+    }
+
+    args = [
+            'config-help',
+            '--lang', 'java'
+    ]
+
+}
+
+task swaggerMeta(type: JavaExec) {
+    classpath = files {
+        configurations.swagger.singleFile
+    }
+
+    args = [
+            'meta',
+            '--output', 'build/meta',
+            '-n', 'fluentJava',
+            '-p', 'ch.alni.java.fluent'
+    ]
+
+}

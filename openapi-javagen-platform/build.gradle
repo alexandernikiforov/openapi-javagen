@@ -1,0 +1,19 @@
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    api platform('com.fasterxml.jackson:jackson-bom:2.10.1')
+
+    constraints {
+        api group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
+
+        api group: 'commons-io', name: 'commons-io', version: '2.6'
+        api 'junit:junit:4.12'
+        api 'org.assertj:assertj-core:3.14.0'
+    }
+}

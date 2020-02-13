@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        buildNumber = System.getenv('TRAVIS') ?  System.getenv('TRAVIS_BUILD_NUMBER') : '0'
+        buildVersion = version + '.' + buildNumber
+    }
+
+    apply plugin: 'idea'
+}
+
+subprojects {
+    project.tasks.withType(JavaCompile) {
+        sourceCompatibility = '11'
+        targetCompatibility = '11'
+    }
+}
+
+wrapper {
+    gradleVersion = '6.0.1'
+}

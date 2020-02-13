@@ -1,0 +1,7 @@
+{
+  "groupId":"ch.alni",
+  "artifactId":"microsoft-batch-service-client",
+  "artifactVersion":"0.1.0",
+  "library":"jersey2",
+  "java8": "true"
+}
